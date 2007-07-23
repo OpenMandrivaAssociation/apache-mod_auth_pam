@@ -6,12 +6,13 @@
 Summary: 	Pam authorisation for Apache
 Name: 		apache-%{mod_name}
 Version: 	1.1.1
-Release: 	%mkrel 3
+Release: 	%mkrel 4
 License: 	LGPL
 Group: 		System/Servers
 URL: 		http://pam.sourceforge.net/mod_auth_pam/
 Source0:	http://pam.sourceforge.net/mod_auth_pam/dist/%{mod_name}-2.0-%{version}.tar.bz2
-Source1:	%{mod_conf}.bz2
+Source1:	http://pam.sourceforge.net/mod_auth_pam/shadow.html
+Source2:	%{mod_conf}
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 Requires(pre):	apache-conf >= 2.2.0
@@ -34,6 +35,9 @@ the HTTP protocol allows it.
 
 %setup -q -n %{mod_name}
 
+cp %{SOURCE1} .
+cp %{SOURCE2} %{mod_conf}
+
 chmod 644 INSTALL README doc/configure.html doc/faq.html doc/install.html
 
 # strip away annoying ^M
@@ -53,10 +57,7 @@ install -d %{buildroot}%{_sysconfdir}/httpd/modules.d
 install -d %{buildroot}%{_sysconfdir}/pam.d
 
 install -m0755 .libs/*.so %{buildroot}%{_libdir}/apache-extramodules/
-bzcat %{SOURCE1} > %{buildroot}%{_sysconfdir}/httpd/modules.d/%{mod_conf}
-
-install -d %{buildroot}%{_var}/www/html/addon-modules
-ln -s ../../../..%{_docdir}/%{name}-%{version} %{buildroot}%{_var}/www/html/addon-modules/%{name}-%{version}
+install -m0644 %{mod_conf} %{buildroot}%{_sysconfdir}/httpd/modules.d/%{mod_conf}
 
 cat > %{buildroot}%{_sysconfdir}/pam.d/httpd << EOF
 #%PAM-1.0
@@ -81,10 +82,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc INSTALL README doc/configure.html doc/faq.html doc/install.html
+%doc INSTALL README doc/configure.html doc/faq.html doc/install.html shadow.html
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/httpd/modules.d/%{mod_conf}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/pam.d/httpd
 %attr(0755,root,root) %{_libdir}/apache-extramodules/mod_*.so
-%{_var}/www/html/addon-modules/*
-
-
