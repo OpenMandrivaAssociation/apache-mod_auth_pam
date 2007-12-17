@@ -22,7 +22,6 @@ Requires:	apache >= 2.2.0
 BuildRequires:	apache-devel >= 2.2.0
 BuildRequires:	file
 BuildRequires:  pam-devel
-BuildRoot: 	%{_tmppath}/%{name}-root
 
 %description
 The PAM authentication module implements Basic authentication on 
