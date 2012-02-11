@@ -6,7 +6,7 @@
 Summary: 	Pam authorisation for Apache
 Name: 		apache-%{mod_name}
 Version: 	1.1.1
-Release: 	%mkrel 10
+Release: 	%mkrel 11
 License: 	LGPL
 Group: 		System/Servers
 URL: 		http://pam.sourceforge.net/mod_auth_pam/
