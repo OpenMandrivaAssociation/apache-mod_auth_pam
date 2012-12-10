@@ -6,7 +6,7 @@
 Summary: 	Pam authorisation for Apache
 Name: 		apache-%{mod_name}
 Version: 	1.1.1
-Release: 	%mkrel 11
+Release: 	11
 License: 	LGPL
 Group: 		System/Servers
 URL: 		http://pam.sourceforge.net/mod_auth_pam/
@@ -22,7 +22,6 @@ Requires:	apache >= 2.2.0
 BuildRequires:	apache-devel >= 2.2.0
 BuildRequires:	file
 BuildRequires:  pam-devel
-BuildRoot: 	%{_tmppath}/%{name}-root
 
 %description
 The PAM authentication module implements Basic authentication on 
@@ -46,11 +45,10 @@ find . -type f|xargs file|grep 'text'|cut -d: -f1|xargs perl -p -i -e 's/\r//'
 
 %build
 
-%{_sbindir}/apxs -c %{mod_name}.c -o %{mod_name}.la -lpam
-%{_sbindir}/apxs -c mod_auth_sys_group.c -o mod_auth_sys_group.la -lpam
+%{_bindir}/apxs -c %{mod_name}.c -o %{mod_name}.la -lpam
+%{_bindir}/apxs -c mod_auth_sys_group.c -o mod_auth_sys_group.la -lpam
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 install -d %{buildroot}%{_libdir}/apache-extramodules
 install -d %{buildroot}%{_sysconfdir}/httpd/modules.d
@@ -78,11 +76,84 @@ if [ "$1" = "0" ]; then
 fi
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
 %doc INSTALL README doc/configure.html doc/faq.html doc/install.html shadow.html
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/httpd/modules.d/%{mod_conf}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/pam.d/httpd
 %attr(0755,root,root) %{_libdir}/apache-extramodules/mod_*.so
+
+
+%changelog
+* Sat Feb 11 2012 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-11mdv2012.0
++ Revision: 772571
+- rebuild
+
+* Tue May 24 2011 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-10
++ Revision: 678267
+- mass rebuild
+
+* Sun Oct 24 2010 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-9mdv2011.0
++ Revision: 587925
+- rebuild
+
+* Mon Mar 08 2010 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-8mdv2010.1
++ Revision: 516051
+- rebuilt for apache-2.2.15
+
+* Sat Aug 01 2009 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-7mdv2010.0
++ Revision: 406542
+- rebuild
+
+* Thu Dec 20 2007 Olivier Blin <blino@mandriva.org> 1.1.1-6mdv2009.1
++ Revision: 135820
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sat Sep 08 2007 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-6mdv2008.0
++ Revision: 82524
+- rebuild
+
+* Mon Jul 23 2007 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-5mdv2008.0
++ Revision: 54701
+- bump release
+
+* Mon Jul 23 2007 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-4mdv2008.0
++ Revision: 54700
+- fix #27623
+
+
+* Sat Mar 10 2007 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-3mdv2007.1
++ Revision: 140616
+- rebuild
+
+* Thu Nov 09 2006 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-2mdv2007.0
++ Revision: 79328
+- Import apache-mod_auth_pam
+
+* Mon Jul 24 2006 Nicolas Lécureuil <neoclust@mandriva.org> 1.1.1-2mdv2007.0
+- Fix for new PAM
+
+* Mon Jan 30 2006 Oden Eriksson <oeriksson@mandriva.com> 1.1.1-1mdk
+- built for apache-2.2.0
+
+* Fri Jan 20 2006 Nicolas Lécureuil <neoclust@mandriva.org> 1:1.1.1-2mdk
+- Add BuildRequires
+
+* Thu Jan 19 2006 Oden Eriksson <oeriksson@mandriva.com> 1:1.1.1-1mdk
+- fix versioning and deps
+
+* Tue Jun 07 2005 Oden Eriksson <oeriksson@mandriva.com> 1.3.33_1.1.1-1mdk
+- renamed to apache1-mod_auth_pam and reworked it quite a bit
+
+* Tue Feb 15 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 1.1.1-10mdk
+- spec file cleanups, remove the ADVX-build stuff
+
+* Sun Nov 21 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 1.1.1-9mdk
+- built for apache 1.3.33
+
+* Fri Jun 11 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 1.1.1-8mdk
+- built for apache 1.3.31
+

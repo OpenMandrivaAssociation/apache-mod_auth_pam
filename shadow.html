@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>using /etc/shadow with mod_auth_pam</title>
+  </head>
+
+  <body>
+      <h1 align="center">using /etc/shadow with mod_auth_pam</h1>
+
+      <h2>The problem</h2>
+
+      <p align="justify">The normal problem with accessing a shadow password file from Apache is that that the shadow password file is not readable to everyone, so Apache can't read it.</p>
+
+      <h2>The <em>wrong</em> solution</h2>
+
+      <p align="justify">Some smart-ass suggested making the shadow password file readable for everyone so that Apache can read it again. <strong>Don't do that!</strong> The whole point of having a shadow password file is limiting access to some well known services (root, that is), so that hackers are prevented from running a password-cracker over it. With that in mind, note that the real solution presented below somewhat weakens that protection, but its nowhere as unsafe as making the whole file readable to everyone (<em>shudder</em>).</p>
+
+      <h2>The solution (well, sort of)</h2>
+
+      <p align="justify">
+	A solution for making only Apache able to read the password shadow file is chgrp'ing the shadow password file to some new group (for example &quot;shadow-readers&quot;), then placing this line into your httpd.conf:
+<xmp>
+Group shadow-readers
+</xmp>
+	After that, Apache (and only Apache) will be able to read your shadow password file.
+      </p>
+
+      <h2>Things to keep in mind</h2>
+
+      <p align="justify">By following the above steps, your are delibaretely weakening your system security, albeit only a little. Be sure to understand what you do. If in doubt, don't do it.</p>
+
+  </body>
+</html>
