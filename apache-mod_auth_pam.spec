@@ -9,7 +9,7 @@ Version: 	1.1.1
 Release: 	12
 License: 	LGPL
 Group: 		System/Servers
-URL: 		http://pam.sourceforge.net/mod_auth_pam/
+URL: 		https://pam.sourceforge.net/mod_auth_pam/
 Source0:	http://pam.sourceforge.net/mod_auth_pam/dist/%{mod_name}-2.0-%{version}.tar.bz2
 Source1:	http://pam.sourceforge.net/mod_auth_pam/shadow.html
 Source2:	%{mod_conf}
